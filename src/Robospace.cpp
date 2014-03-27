@@ -16,7 +16,7 @@ Robospace::Robospace() {
 	Polycode::CoreServices::getInstance()->getResourceManager()->addArchive("res/default.pak");
 	Polycode::CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
 
-	Polycode::Screen *screen = new Polycode::Screen();
+	screen = new Polycode::Screen();
 	Polycode::ScreenLabel *label = new Polycode::ScreenLabel("Hello, Robospace!", 32);
 	screen->addChild(label);
 
@@ -40,6 +40,19 @@ void Robospace::handleEvent(Polycode::Event *e) {
 		switch (e->getEventCode()) {
 			case InputEvent::EVENT_KEYDOWN:
 				switch (event->keyCode()) {
+					case Polycode::KEY_w:
+						screenSpeedY = 100;
+						break;
+					case Polycode::KEY_s:
+						screenSpeedY = -100;
+						break;
+					case Polycode::KEY_a:
+						screenSpeedX = 100;
+						break;
+					case Polycode::KEY_d:
+						screenSpeedX = -100;
+						break;
+
 					case Polycode::KEY_UP:
 						forwardSpeed = 100;
 						break;
@@ -59,6 +72,16 @@ void Robospace::handleEvent(Polycode::Event *e) {
 				break;
 			case InputEvent::EVENT_KEYUP:
 				switch (event->keyCode()) {
+					case Polycode::KEY_w:
+					case Polycode::KEY_s:
+						screenSpeedY = 0;
+						break;
+
+					case Polycode::KEY_a:
+					case Polycode::KEY_d:
+						screenSpeedX = 0;
+						break;
+
 					case Polycode::KEY_LEFT:
 					case Polycode::KEY_RIGHT:
 						rotationSpeed = 0;
@@ -87,5 +110,9 @@ void Robospace::run() {
 			robot->setRotation(robot->getRotation() +
 					elapsed * rotationSpeed * (forwardSpeed > 0 ? 1 : -1));
 		}
+
+		Polycode::Vector2 offset = screen->getScreenOffset();
+		screen->setScreenOffset(offset.x + screenSpeedX*elapsed,
+				offset.y + screenSpeedY*elapsed);
 	} while (core->updateAndRender());
 }

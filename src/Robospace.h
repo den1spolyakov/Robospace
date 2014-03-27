@@ -7,6 +7,7 @@ namespace Polycode {
 	class Core;
 	class Event;
 	class PolycodeView;
+	class Screen;
 	class ScreenShape;
 }
 
@@ -25,10 +26,14 @@ private:
 	Polycode::Core *core;
 	Polycode::PolycodeView *view;
 
+	Polycode::Screen *screen;
 	Polycode::ScreenShape *robot;
 
 	double rotationSpeed;
 	double forwardSpeed;
+
+	double screenSpeedX;
+	double screenSpeedY;
 
 };
 
