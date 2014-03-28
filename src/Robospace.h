@@ -11,6 +11,8 @@ namespace Polycode {
 	class ScreenShape;
 }
 
+class Robot;
+
 /**
  * The main game class.
  */
@@ -27,7 +29,7 @@ private:
 	Polycode::PolycodeView *view;
 
 	Polycode::Screen *screen;
-	Polycode::ScreenShape *robot;
+	Robot *robot;
 
 	double rotationSpeed;
 	double forwardSpeed;

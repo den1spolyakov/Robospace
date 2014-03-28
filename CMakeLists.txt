@@ -5,10 +5,12 @@ project(Robospace)
 set(Robospace_SRCS
 	src/main.cpp
 	src/Robospace.cpp
+	src/Robot.cpp
 )
 
 set(Robospace_HDRS
 	src/Robospace.h
+	src/Robot.h
 )
 
 # TODO: Currently, there is no polycode finding

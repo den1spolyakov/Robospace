@@ -8,6 +8,8 @@
 
 #include <cmath>
 
+#include "Robot.h"
+
 Robospace::Robospace() {
 	view = new Polycode::PolycodeView("Robospace");
 
@@ -20,12 +22,9 @@ Robospace::Robospace() {
 	Polycode::ScreenLabel *label = new Polycode::ScreenLabel("Hello, Robospace!", 32);
 	screen->addChild(label);
 
-	robot = new Polycode::ScreenShape(Polycode::ScreenShape::SHAPE_RECT, 64, 64);
-	robot->setPositionMode(Polycode::ScreenEntity::POSITION_CENTER);
+	robot = new Robot();
 	robot->setPosition(320, 240);
 	screen->addChild(robot);
-	rotationSpeed = 0;
-	forwardSpeed = 0;
 
 	core->getInput()->addEventListener(this, Polycode::InputEvent::EVENT_KEYDOWN);
 	core->getInput()->addEventListener(this, Polycode::InputEvent::EVENT_KEYUP);
@@ -54,19 +53,19 @@ void Robospace::handleEvent(Polycode::Event *e) {
 						break;
 
 					case Polycode::KEY_UP:
-						forwardSpeed = 100;
+						robot->forwardSpeed = 100;
 						break;
 
 					case Polycode::KEY_DOWN:
-						forwardSpeed = -100;
+						robot->forwardSpeed = -100;
 						break;
 
 					case Polycode::KEY_LEFT:
-						rotationSpeed = -100;
+						robot->rotationSpeed = -100;
 						break;
 
 					case Polycode::KEY_RIGHT:
-						rotationSpeed = 100;
+						robot->rotationSpeed = 100;
 						break;
 				}
 				break;
@@ -84,12 +83,12 @@ void Robospace::handleEvent(Polycode::Event *e) {
 
 					case Polycode::KEY_LEFT:
 					case Polycode::KEY_RIGHT:
-						rotationSpeed = 0;
+						robot->rotationSpeed = 0;
 						break;
 
 					case Polycode::KEY_UP:
 					case Polycode::KEY_DOWN:
-						forwardSpeed = 0;
+						robot->forwardSpeed = 0;
 						break;
 				}
 				break;
@@ -102,13 +101,13 @@ void Robospace::run() {
 		Number elapsed = core->getElapsed();
 
 		Polycode::Vector2 pos = robot->getPosition2D();
-		pos.x += elapsed * forwardSpeed * std::cos(robot->getRotation() / 180 * M_PI);
-		pos.y += elapsed * forwardSpeed * std::sin(robot->getRotation() / 180 * M_PI);
+		pos.x += elapsed * robot->forwardSpeed * std::cos(robot->getRotation() / 180 * M_PI);
+		pos.y += elapsed * robot->forwardSpeed * std::sin(robot->getRotation() / 180 * M_PI);
 
 		robot->setPosition(pos);
-		if (forwardSpeed) {
+		if (robot->forwardSpeed) {
 			robot->setRotation(robot->getRotation() +
-					elapsed * rotationSpeed * (forwardSpeed > 0 ? 1 : -1));
+					elapsed * robot->rotationSpeed * (robot->forwardSpeed > 0 ? 1 : -1));
 		}
 
 		Polycode::Vector2 offset = screen->getScreenOffset();
