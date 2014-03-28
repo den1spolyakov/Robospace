@@ -18,7 +18,7 @@ set(Robospace_HDRS
 
 if(POLYCODE_FOUND)
 else(POLYCODE_FOUND)
-	set(POLYCODE_DIR /home/rasen/tmp/Polycode/Release/Linux/Framework)
+	set(POLYCODE_DIR "/usr/lib/Polycode" CACHE STRING "Polycode framework directory")
 	set(POLYCODE_INCLUDE_DIRS
 		${POLYCODE_DIR}/Core/include
 		/usr/include/freetype2
