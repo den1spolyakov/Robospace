@@ -6,6 +6,9 @@
 #include <PolyScreenShape.h>
 #include <PolyVector2.h>
 
+#include <PolyPhysicsScreen.h>
+#include <PolyPhysicsScreenEntity.h>
+
 #include <cmath>
 
 #include "Robot.h"
@@ -18,16 +21,24 @@ Robospace::Robospace() {
 	Polycode::CoreServices::getInstance()->getResourceManager()->addArchive("res/default.pak");
 	Polycode::CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
 
-	screen = new Polycode::Screen();
+	screen = new Polycode::PhysicsScreen();
 	Polycode::ScreenLabel *label = new Polycode::ScreenLabel("Hello, Robospace!", 32);
 	screen->addChild(label);
 
 	robot = new Robot();
-	robot->setPosition(320, 240);
-	screen->addChild(robot);
+	robots.push_back(robot);
+	robot->setPosition(120, 240);
+	screen->addCollisionChild(robot, Polycode::PhysicsScreenEntity::ENTITY_RECT);
+
+	robot = new Robot();
+	robots.push_back(robot);
+	robot->setPosition(480, 240);
+	screen->addCollisionChild(robot, Polycode::PhysicsScreenEntity::ENTITY_RECT);
 
 	core->getInput()->addEventListener(this, Polycode::InputEvent::EVENT_KEYDOWN);
 	core->getInput()->addEventListener(this, Polycode::InputEvent::EVENT_KEYUP);
+
+	core->getInput()->addEventListener(this, Polycode::InputEvent::EVENT_MOUSEDOWN);
 }
 
 void Robospace::handleEvent(Polycode::Event *e) {
@@ -37,6 +48,15 @@ void Robospace::handleEvent(Polycode::Event *e) {
 		InputEvent *event = static_cast<InputEvent *>(e);
 
 		switch (e->getEventCode()) {
+			case InputEvent::EVENT_MOUSEDOWN: {
+					Polycode::Vector2 mouse = core->getInput()->getMousePosition();
+					Polycode::ScreenEntity *entity = screen->getEntityAtPosition(mouse.x, mouse.y);
+					Robot *r0 = dynamic_cast<Robot *>(entity);
+					if (r0) {
+					    robot = r0;
+					}
+				}
+				break;
 			case InputEvent::EVENT_KEYDOWN:
 				switch (event->keyCode()) {
 					case Polycode::KEY_w:

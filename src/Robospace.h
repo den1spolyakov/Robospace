@@ -1,13 +1,15 @@
 #ifndef ROBOSPACE_H_
 #define ROBOSPACE_H_
 
+#include <vector>
+
 #include <PolyEventHandler.h>
 
 namespace Polycode {
 	class Core;
 	class Event;
 	class PolycodeView;
-	class Screen;
+	class PhysicsScreen;
 	class ScreenShape;
 }
 
@@ -28,7 +30,9 @@ private:
 	Polycode::Core *core;
 	Polycode::PolycodeView *view;
 
-	Polycode::Screen *screen;
+	Polycode::PhysicsScreen *screen;
+	std::vector<Robot *> robots;
+
 	Robot *robot;
 
 	double rotationSpeed;

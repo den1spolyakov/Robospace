@@ -23,16 +23,22 @@ else(POLYCODE_FOUND)
 	set(POLYCODE_DIR "/usr/lib/Polycode" CACHE STRING "Polycode framework directory")
 	set(POLYCODE_INCLUDE_DIRS
 		${POLYCODE_DIR}/Core/include
+		${POLYCODE_DIR}/Modules/include
+		${POLYCODE_DIR}/Modules/Dependencies/include
 		/usr/include/freetype2
 		/usr/include/AL
 	)
 	set(POLYCODE_LINK_DIR
 		${POLYCODE_DIR}/Core/lib
+		${POLYCODE_DIR}/Modules/lib
+		${POLYCODE_DIR}/Modules/Dependencies/lib
 	)
 	set(POLYCODE_LIBRARIES
 		GL
 		GLU
 		Polycore
+		Polycode2DPhysics
+		Box2D
 		SDL
 		X11
 		assimp
